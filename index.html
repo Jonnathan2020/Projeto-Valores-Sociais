@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
-/* ============ TOKENS ============ */
 :root{
   --paper: #EFEDE3;
   --paper-alt: #E3DFCF;
@@ -77,7 +76,6 @@ img,svg{ max-width:100%; display:block; }
 
 .wrap{ width:100%; max-width:1180px; margin:0 auto; padding-inline:clamp(1.25rem, 4vw, 3rem); }
 
-/* focus visibility everywhere */
 a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,textarea:focus-visible,select:focus-visible{
   outline: 3px solid var(--focus);
   outline-offset: 3px;
@@ -87,7 +85,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,tex
   *{ scroll-behavior:auto !important; animation-duration:.001ms !important; transition-duration:.001ms !important; }
 }
 
-/* ============ SKIP LINK ============ */
 .skip-link{
   position:absolute; left:1rem; top:-4rem;
   background:var(--forest-deep); color:#fff;
@@ -96,7 +93,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,tex
 }
 .skip-link:focus{ top:1rem; }
 
-/* ============ ACCESSIBILITY BAR ============ */
 .a11y-bar{
   background:var(--forest-deep);
   color:#fff;
@@ -126,7 +122,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,tex
   background:#fff; color:var(--forest-deep); border-color:#fff;
 }
 
-/* ============ HEADER / NAV ============ */
 header.site-header{
   position:sticky; top:0; z-index:100;
   background:var(--paper);
@@ -154,7 +149,6 @@ nav.primary-nav a{
 }
 nav.primary-nav a:hover{ color:var(--forest-deep); border-bottom-color:var(--ochre); }
 
-/* ============ HERO ============ */
 .hero{ padding-block: clamp(2.5rem, 6vw, 5.5rem) clamp(3rem,7vw,6rem); }
 .hero .wrap{
   display:grid; grid-template-columns: 1.1fr .9fr; gap:clamp(2rem,5vw,4rem);
