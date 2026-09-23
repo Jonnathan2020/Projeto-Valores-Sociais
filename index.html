@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Valores Sociais — Educação para todos, em qualquer idade</title>
+<meta name="description" content="Projeto Valores Sociais: acesso à educação de qualidade, formação técnica e educação financeira para todas as idades, com acessibilidade em primeiro lugar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  --paper: #EFEDE3;
+  --paper-alt: #E3DFCF;
+  --card: #F6F4EB;
+  --ink: #23261F;
+  --ink-soft: #52564A;
+  --forest: #415A46;
+  --forest-deep: #2A3D2E;
+  --ochre: #A9843F;
+  --ochre-deep: #8A6B30;
+  --clay: #9C5636;
+  --line: #C7C1A9;
+  --focus: #8A6B30;
+  color-scheme: light;
+}
+
+body:has(#contrast-on:checked){
+  --paper: #0A0B08;
+  --paper-alt: #17190F;
+  --card: #121309;
+  --ink: #FFFFFF;
+  --ink-soft: #F1EFE2;
+  --forest: #A9D6AF;
+  --forest-deep: #CFEBD2;
+  --ochre: #F4C567;
+  --ochre-deep: #FFDD9A;
+  --clay: #FF9E76;
+  --line: #4B4C3E;
+  --focus: #F4C567;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top: calc(5.5rem + env(safe-area-inset-top,0px));
+}
+body:has(#fs-large:checked){ font-size:113%; }
+body:has(#fs-xl:checked){ font-size:128%; }
+
+html,body{ height:auto; }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Public Sans", -apple-system, sans-serif;
+  line-height:1.6;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  -webkit-font-smoothing:antialiased;
+  transition: background .2s ease, color .2s ease;
+}
+
+h1,h2,h3{
+  font-family:"Newsreader", Georgia, serif;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.12;
+  margin:0;
+}
+
+p{ margin:0 0 1em; max-width:62ch; color:var(--ink-soft); }
+a{ color:var(--forest-deep); }
+img,svg{ max-width:100%; display:block; }
+
+.wrap{ width:100%; max-width:1180px; margin:0 auto; padding-inline:clamp(1.25rem, 4vw, 3rem); }
+
+/* focus visibility everywhere */
+a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius:2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ scroll-behavior:auto !important; animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+
+/* ============ SKIP LINK ============ */
+.skip-link{
+  position:absolute; left:1rem; top:-4rem;
+  background:var(--forest-deep); color:#fff;
+  padding:.75rem 1.25rem; border-radius:6px;
+  font-weight:600; z-index:200; transition:top .15s ease;
+}
+.skip-link:focus{ top:1rem; }
+
+/* ============ ACCESSIBILITY BAR ============ */
+.a11y-bar{
+  background:var(--forest-deep);
+  color:#fff;
+}
+.a11y-bar .wrap{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem 1.25rem;
+  padding-block:.55rem;
+  font-size:.82rem;
+}
+.a11y-group{ display:flex; align-items:center; gap:.4rem; }
+.a11y-group span.lbl{ opacity:.85; margin-right:.15rem; }
+.a11y-bar input[type="radio"],.a11y-bar input[type="checkbox"]{
+  position:absolute; opacity:0; width:1px; height:1px; overflow:hidden;
+}
+.a11y-bar label{
+  cursor:pointer; user-select:none;
+  border:1.5px solid rgba(255,255,255,.55);
+  padding:.28rem .65rem; border-radius:5px;
+  font-weight:600; letter-spacing:.01em;
+  color:#fff;
+}
+.a11y-bar label:hover{ border-color:#fff; background:rgba(255,255,255,.08); }
+#fs-normal:checked ~ .a11y-bar label[for="fs-normal"],
+#fs-large:checked  ~ .a11y-bar label[for="fs-large"],
+#fs-xl:checked     ~ .a11y-bar label[for="fs-xl"],
+#contrast-on:checked ~ .a11y-bar label[for="contrast-on"]{
+  background:#fff; color:var(--forest-deep); border-color:#fff;
+}
+
+/* ============ HEADER / NAV ============ */
+header.site-header{
+  position:sticky; top:0; z-index:100;
+  background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.nav-row{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:1.5rem; padding-block:1rem;
+}
+.brand{
+  display:flex; align-items:center; gap:.6rem;
+  font-family:"Newsreader",serif; font-weight:600; font-size:1.25rem;
+  text-decoration:none; color:var(--ink);
+}
+.brand .mark{ width:30px; height:30px; flex:none; color:var(--forest); }
+
+nav.primary-nav ul{
+  list-style:none; display:flex; flex-wrap:wrap; gap:.25rem 1.4rem;
+  margin:0; padding:0;
+}
+nav.primary-nav a{
+  text-decoration:none; color:var(--ink-soft);
+  font-weight:600; font-size:.98rem;
+  padding:.4rem .1rem; border-bottom:2px solid transparent;
+}
+nav.primary-nav a:hover{ color:var(--forest-deep); border-bottom-color:var(--ochre); }
+
+/* ============ HERO ============ */
+.hero{ padding-block: clamp(2.5rem, 6vw, 5.5rem) clamp(3rem,7vw,6rem); }
+.hero .wrap{
+  display:grid; grid-template-columns: 1.1fr .9fr; gap:clamp(2rem,5vw,4rem);
+  align-items:center;
+}
+.hero .eyebrow{ color:var(--clay); font-weight:700; margin-bottom:.9rem; display:block; font-size:.95rem; }
+.hero h1{ font-size:clamp(2.2rem, 4.6vw, 3.6rem); margin-bottom:1.1rem; }
+.hero h1 em{ font-style:italic; color:var(--forest-deep); }
+.hero p.lede{ font-size:1.15rem; color:var(--ink-soft); }
+.hero .cta-row{ display:flex; flex-wrap:wrap; gap:.85rem; margin-top:1.6rem; }
+
+.btn{
+  display:inline-block; text-decoration:none; font-weight:700;
+  padding:.85rem 1.5rem; border-radius:7px; font-size:1rem;
+  border:1.5px solid transparent;
+}
+.btn-primary{ background:var(--forest-deep); color:#fff; }
+.btn-primary:hover{ background:var(--forest); }
+.btn-ghost{ border-color:var(--ink); color:var(--ink); }
+.btn-ghost:hover{ background:var(--paper-alt); }
+
+.stat-panel{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:clamp(1.5rem,3vw,2.4rem);
+}
+.stat-panel .num{
+  font-family:"Newsreader",serif; font-style:italic; font-weight:500;
+  font-size:clamp(3.2rem,7vw,5rem); color:var(--forest-deep); line-height:1;
+}
+.stat-panel .num-label{ font-weight:600; margin-top:.5rem; color:var(--ink); max-width:32ch; }
+.stat-panel .num-source{ font-size:.85rem; color:var(--ink-soft); margin-top:.9rem; }
+.hero-illustration{ margin-top:1.6rem; color:var(--forest); }
+
+/* ============ SECTION SCAFFOLDING ============ */
+section{ padding-block:clamp(3rem,6vw,5.5rem); border-top:1px solid var(--line); }
+section.alt{ background:var(--paper-alt); }
+.section-head{ max-width:44rem; margin-bottom:clamp(2rem,4vw,3rem); }
+.section-head .kicker{ color:var(--clay); font-weight:700; display:block; margin-bottom:.6rem; }
+.section-head h2{ font-size:clamp(1.7rem,3.4vw,2.5rem); }
+.section-head p{ margin-top:.9rem; font-size:1.05rem; }
+
+/* ============ PROBLEMA: fact list ============ */
+.fact-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:1.25rem;
+}
+.fact-card{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:1.5rem;
+}
+.fact-card .fig{
+  font-family:"Newsreader",serif; font-style:italic; font-size:2.1rem;
+  color:var(--forest-deep); display:block; margin-bottom:.4rem;
+}
+.fact-card p{ margin:0; font-size:.96rem; }
+
+.divider-note{
+  border-left:3px solid var(--ochre); padding-left:1.1rem; margin-top:2.5rem;
+  max-width:52rem;
+}
+
+/* ============ EDUCAÇÃO: sequence ============ */
+.stage-list{ display:flex; flex-direction:column; gap:0; }
+.stage{
+  display:grid; grid-template-columns:5rem 1fr; gap:1.5rem;
+  padding-block:2rem; border-top:1px solid var(--line);
+}
+.stage:first-child{ border-top:none; }
+.stage .stage-no{
+  font-family:"Newsreader",serif; font-style:italic; font-size:2.4rem;
+  color:var(--line); font-weight:500;
+}
+body:has(#contrast-on:checked) .stage .stage-no{ color:var(--ink-soft); }
+.stage h3{ font-size:1.35rem; margin-bottom:.55rem; }
+.stage .tag{
+  display:inline-block; font-size:.78rem; font-weight:700; color:var(--forest-deep);
+  background:var(--paper-alt); border:1px solid var(--line);
+  padding:.2rem .55rem; border-radius:20px; margin-bottom:.7rem;
+}
+section.alt .stage .tag{ background:var(--card); }
+
+/* ============ FINANÇAS ============ */
+.tips-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
+.tip{ padding-top:.2rem; }
+.tip h3{ font-size:1.15rem; margin-bottom:.5rem; color:var(--forest-deep); }
+.tip p{ font-size:.97rem; }
+
+/* ============ SOLUÇÃO / FORM ============ */
+.solution-copy{ max-width:60rem; margin-bottom:2.5rem; }
+.role-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.25rem; margin-bottom:3rem; }
+.role-card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1.4rem; }
+.role-card h3{ font-size:1.1rem; margin-bottom:.4rem; }
+.role-card p{ font-size:.92rem; margin-bottom:0; }
+
+form.apply{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:clamp(1.5rem,3vw,2.5rem); max-width:44rem;
+}
+.field{ margin-bottom:1.4rem; }
+.field label,legend{
+  display:block; font-weight:700; margin-bottom:.4rem; font-size:.96rem;
+}
+fieldset{ border:none; padding:0; margin:0 0 1.4rem; }
+fieldset legend{ padding:0; margin-bottom:.6rem; }
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
+input[type="text"],input[type="date"],select,textarea{
+  width:100%; font-family:inherit; font-size:1rem;
+  padding:.7rem .8rem; border:1.5px solid var(--line); border-radius:7px;
+  background:var(--paper); color:var(--ink);
+}
+textarea{ min-height:6rem; resize:vertical; }
+.radio-set{ display:flex; flex-wrap:wrap; gap:.6rem; }
+.radio-set label{
+  border:1.5px solid var(--line); padding:.55rem 1rem; border-radius:8px;
+  cursor:pointer; font-weight:600; font-size:.92rem;
+}
+.radio-set input[type="radio"]{ position:absolute; opacity:0; width:1px; height:1px; }
+.radio-set input[type="radio"]:checked + span{ color:var(--forest-deep); }
+.radio-set label:has(input:checked){
+  border-color:var(--forest-deep); background:var(--paper-alt);
+}
+.check-set{ display:flex; flex-direction:column; gap:.55rem; }
+.check-set label{ display:flex; align-items:center; gap:.55rem; font-weight:500; font-size:.95rem; }
+.check-set input{ width:1.1rem; height:1.1rem; }
+
+.conditional-fields{ display:none; padding-top:.3rem; }
+form.apply:has(#tipo-voluntario:checked) .conditional-fields.for-vol{ display:block; }
+form.apply:has(#tipo-estudante:checked) .conditional-fields.for-est{ display:block; }
+form.apply:has(#tipo-investidor:checked) .conditional-fields.for-inv{ display:block; }
+
+.hint{ font-size:.85rem; color:var(--ink-soft); margin-top:.35rem; }
+.submit-row{ margin-top:1.8rem; }
+button.btn-primary{ font:inherit; cursor:pointer; }
+
+/* ============ CONTATO ============ */
+.contact-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(2rem,4vw,3.5rem); align-items:start; }
+.contact-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:1.1rem; }
+.contact-list li{ display:flex; gap:.9rem; align-items:flex-start; }
+.contact-list .ic{ width:1.4rem; height:1.4rem; flex:none; color:var(--forest); margin-top:.15rem; }
+.contact-list strong{ display:block; }
+.map-note{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:1.5rem; font-size:.95rem;
+}
+
+/* ============ A11Y STATEMENT ============ */
+.a11y-list{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:.9rem 1.5rem; }
+.a11y-list li{ display:flex; gap:.7rem; font-size:.95rem; color:var(--ink-soft); }
+.a11y-list .chk{ color:var(--forest-deep); font-weight:700; flex:none; }
+.a11y-list li.soon .chk{ color:var(--ochre-deep); }
+
+/* ============ SOBRE ============ */
+.about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,4vw,3.5rem); }
+.value-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1.1rem; }
+.value-list li{ border-top:1px solid var(--line); padding-top:1.1rem; }
+.value-list li:first-child{ border-top:none; padding-top:0; }
+.value-list strong{ color:var(--forest-deep); display:block; margin-bottom:.25rem; }
+
+/* ============ FOOTER ============ */
+footer{ background:var(--forest-deep); color:#fff; padding-block:2.5rem; }
+footer .wrap{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:1.5rem; align-items:center; }
+footer a{ color:#fff; }
+footer p{ color:rgba(255,255,255,.8); margin:0; font-size:.9rem; max-width:none; }
+.footer-links{ list-style:none; display:flex; gap:1.4rem; padding:0; margin:0; flex-wrap:wrap; font-size:.9rem; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px){
+  .hero .wrap{ grid-template-columns:1fr; }
+  .about-grid,.contact-grid{ grid-template-columns:1fr; }
+  .two-col{ grid-template-columns:1fr; }
+  nav.primary-nav ul{ gap:.3rem .9rem; }
+  nav.primary-nav a{ font-size:.9rem; }
+}
+@media (max-width: 620px){
+  .nav-row{ flex-direction:column; align-items:flex-start; gap:.7rem; }
+  .stage{ grid-template-columns:1fr; }
+  .stage .stage-no{ font-size:1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- accessibility controls (radios/checkbox live here so :has() can style body) -->
+<input type="radio" name="fontsize" id="fs-normal" checked>
+<input type="radio" name="fontsize" id="fs-large">
+<input type="radio" name="fontsize" id="fs-xl">
+<input type="checkbox" id="contrast-on">
+
+<div class="a11y-bar" role="region" aria-label="Preferências de acessibilidade">
+  <div class="wrap">
+    <div class="a11y-group">
+      <span class="lbl">Tamanho do texto</span>
+      <label for="fs-normal">A</label>
+      <label for="fs-large">A+</label>
+      <label for="fs-xl">A++</label>
+    </div>
+    <div class="a11y-group">
+      <label for="contrast-on">Alto contraste</label>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap nav-row">
+    <a class="brand" href="#home">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 4 L29 10 L16 16 L3 10 Z" fill="currentColor"/>
+        <path d="M9 13.5 V21 C9 23.5 12 26 16 26 C20 26 23 23.5 23 21 V13.5" stroke="currentColor" stroke-width="2" fill="none"/>
+      </svg>
+      Valores Sociais
+    </a>
+    <nav class="primary-nav" aria-label="Navegação principal">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#problema">Problema Social</a></li>
+        <li><a href="#educacao">Educação</a></li>
+        <li><a href="#financas">Dicas Financeiras</a></li>
+        <li><a href="#solucao">Projetos de Solução</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ============ HOME ============ -->
+  <section class="hero" id="home" style="border-top:none;">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Objetivo 4 da Agenda 2030 — ODS da ONU</span>
+        <h1>A educação de qualidade ainda depende de <em>quanto a sua família ganha</em>.</h1>
+        <p class="lede">O Valores Sociais reúne dados sobre essa desigualdade, explica o caminho da educação básica à superior e conecta voluntários, estudantes e investidores a quem precisa desse apoio — em qualquer idade.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#solucao">Quero participar</a>
+          <a class="btn btn-ghost" href="#problema">Entender o problema</a>
+        </div>
+      </div>
+      <div>
+        <div class="stat-panel">
+          <span class="num">44%</span>
+          <p class="num-label">dos brasileiros com 25 anos ou mais ainda não concluíram a educação básica.</p>
+          <p class="num-source">Um ciclo que se repassa entre gerações — e que pode ser quebrado com acesso e apoio contínuo.</p>
+        </div>
+        <svg class="hero-illustration" viewBox="0 0 400 140" aria-hidden="true">
+          <line x1="0" y1="120" x2="400" y2="120" stroke="currentColor" stroke-width="1.5" opacity=".35"/>
+          <rect x="20"  y="90" width="34" height="30" fill="currentColor" opacity=".35"/>
+          <rect x="80"  y="70" width="34" height="50" fill="currentColor" opacity=".55"/>
+          <rect x="140" y="45" width="34" height="75" fill="currentColor" opacity=".75"/>
+          <rect x="200" y="20" width="34" height="100" fill="currentColor"/>
+          <path d="M250 100 Q 300 20 360 20" stroke="currentColor" stroke-width="2" fill="none" opacity=".6"/>
+          <circle cx="360" cy="20" r="5" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEMA SOCIAL ============ -->
+  <section id="problema">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Problema Social</span>
+        <h2>Acesso desigual, resultados desiguais</h2>
+        <p>O acesso físico à escola avançou nas últimas décadas, mas a qualidade do ensino recebido ainda é determinada, na prática, pela renda da família. A isso se somam barreiras de idade, gênero, deficiência, raça, etnia e origem.</p>
+      </div>
+
+      <div class="fact-grid">
+        <div class="fact-card">
+          <span class="fig">44%</span>
+          <p>dos brasileiros acima de 25 anos não concluíram a educação básica.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fig">15+</span>
+          <p>é a idade em que, para milhões de adolescentes, trabalhar deixa de ser escolha e vira necessidade de sobrevivência.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fig">1</span>
+          <p>renda por vez: quando o estudo compete com o sustento da casa, o estudo quase sempre perde.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fig">↻</span>
+          <p>Sem educação técnica ou superior, o ciclo de baixa renda se repete na geração seguinte.</p>
+        </div>
+      </div>
+
+      <p class="divider-note">Por isso tratamos educação e educação financeira como a mesma frente de trabalho: uma abre a porta da renda, a outra ensina a sustentar o que foi conquistado.</p>
+    </div>
+  </section>
+
+  <!-- ============ EDUCAÇÃO ============ -->
+  <section class="alt" id="educacao">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Educação</span>
+        <h2>Da sala de aula ao mercado de trabalho</h2>
+        <p>Cada etapa do ensino cria a base para a próxima. Separamos o conteúdo do site nessas três frentes, cada uma com seus próprios obstáculos e caminhos.</p>
+      </div>
+
+      <div class="stage-list">
+        <article class="stage">
+          <span class="stage-no" aria-hidden="true">01</span>
+          <div>
+            <span class="tag">Ensino médio</span>
+            <h3>Terminar o ciclo básico sem abandonar a família</h3>
+            <p>Foco em manter o adolescente na escola quando a renda de casa aperta: bolsas, transporte, merenda e apoio pedagógico para quem concilia estudo com trabalho informal.</p>
+          </div>
+        </article>
+        <article class="stage">
+          <span class="stage-no" aria-hidden="true">02</span>
+          <div>
+            <span class="tag">Técnico e profissionalizante</span>
+            <h3>Uma habilidade que já gera renda</h3>
+            <p>Cursos curtos e técnicos entregam empregabilidade mais rápido que a formação longa — importante para quem não pode esperar anos para começar a trabalhar.</p>
+          </div>
+        </article>
+        <article class="stage">
+          <span class="stage-no" aria-hidden="true">03</span>
+          <div>
+            <span class="tag">Ensino superior</span>
+            <h3>Mobilidade social e o próximo desafio: o dinheiro</h3>
+            <p>Concluir a graduação muda a renda da família de forma multigeracional — mas é também onde surgem os primeiros grandes desafios financeiros, o que nos leva à próxima seção.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINANÇAS ============ -->
+  <section id="financas">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Dicas Financeiras</span>
+        <h2>Educação financeira para sustentar a educação</h2>
+        <p>De nada adianta chegar à faculdade ou ao curso técnico sem saber administrar o que essa conquista custa e o que ela passa a gerar. Estas são as bases que reforçamos em nossas oficinas.</p>
+      </div>
+
+      <div class="tips-grid">
+        <div class="tip">
+          <h3>Orçamento antes da matrícula</h3>
+          <p>Mapear mensalidade, material e transporte evita que o estudante abandone o curso no meio por um gasto que não foi previsto.</p>
+        </div>
+        <div class="tip">
+          <h3>Bolsas e financiamento estudantil</h3>
+          <p>Conhecer os programas disponíveis — e os prazos de inscrição — é parte da educação financeira, não um detalhe burocrático.</p>
+        </div>
+        <div class="tip">
+          <h3>Reserva para imprevistos</h3>
+          <p>Mesmo pequena, uma reserva evita que uma emergência familiar interrompa os estudos de novo.</p>
+        </div>
+        <div class="tip">
+          <h3>Primeira renda, primeiras escolhas</h3>
+          <p>Ensinamos a diferença entre dívida que investe no futuro e dívida que só consome a renda nova.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOLUÇÃO / FORM ============ -->
+  <section class="alt" id="solucao">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Projetos de Solução</span>
+        <h2>Como o Valores Sociais atua</h2>
+      </div>
+      <div class="solution-copy">
+        <p>Conectamos quem tem tempo, conhecimento ou recursos a quem precisa deles para continuar estudando. O projeto funciona com três tipos de colaboração — escolha a que combina com você no formulário abaixo.</p>
+      </div>
+
+      <div class="role-grid">
+        <div class="role-card">
+          <h3>Voluntário</h3>
+          <p>Dá aulas de reforço, mentoria, doa materiais de apoio ou ajuda na divulgação do projeto.</p>
+        </div>
+        <div class="role-card">
+          <h3>Estudante</h3>
+          <p>Se inscreve para receber acompanhamento pedagógico, bolsas parceiras e oficinas de educação financeira.</p>
+        </div>
+        <div class="role-card">
+          <h3>Investidor</h3>
+          <p>Financia bolsas, materiais e a manutenção das oficinas técnicas e profissionalizantes.</p>
+        </div>
+      </div>
+
+      <form class="apply" aria-labelledby="form-title">
+        <h3 id="form-title" style="margin-bottom:1.4rem;">Formulário de candidatura</h3>
+
+        <div class="two-col">
+          <div class="field">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" autocomplete="given-name" required>
+          </div>
+          <div class="field">
+            <label for="sobrenome">Sobrenome</label>
+            <input type="text" id="sobrenome" name="sobrenome" autocomplete="family-name" required>
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>Tipo de candidatura</legend>
+          <div class="radio-set">
+            <label><input type="radio" name="tipo" id="tipo-voluntario" checked><span>Voluntário</span></label>
+            <label><input type="radio" name="tipo" id="tipo-estudante"><span>Estudante</span></label>
+            <label><input type="radio" name="tipo" id="tipo-investidor"><span>Investidor</span></label>
+          </div>
+        </fieldset>
+
+        <!-- Voluntário -->
+        <div class="conditional-fields for-vol">
+          <div class="two-col">
+            <div class="field">
+              <label for="sexo">Sexo</label>
+              <select id="sexo" name="sexo">
+                <option value="">Prefiro não informar</option>
+                <option>Feminino</option>
+                <option>Masculino</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="data_nasc">Data de nascimento</label>
+              <input type="date" id="data_nasc" name="data_nasc">
+            </div>
+          </div>
+          <div class="field">
+            <label for="habilidades">Habilidades</label>
+            <textarea id="habilidades" name="habilidades" placeholder="Ex.: dou aulas de matemática, sei design, tenho materiais para doar..."></textarea>
+          </div>
+          <fieldset>
+            <legend>Área de interesse</legend>
+            <div class="check-set">
+              <label><input type="checkbox" name="area" value="evangelista"> Evangelista do projeto (divulgação)</label>
+              <label><input type="checkbox" name="area" value="educador"> Educador / mentor</label>
+              <label><input type="checkbox" name="area" value="doador_documentos"> Doador de documentos e conteúdo</label>
+              <label><input type="checkbox" name="area" value="materiais"> Doador de materiais de apoio</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Estudante -->
+        <div class="conditional-fields for-est">
+          <div class="field">
+            <label for="etapa">Em qual etapa você está?</label>
+            <select id="etapa" name="etapa">
+              <option>Ensino médio</option>
+              <option>Curso técnico / profissionalizante</option>
+              <option>Ensino superior</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="necessidade">O que você mais precisa agora?</label>
+            <textarea id="necessidade" name="necessidade" placeholder="Ex.: bolsa, material, acompanhamento pedagógico..."></textarea>
+          </div>
+        </div>
+
+        <!-- Investidor -->
+        <div class="conditional-fields for-inv">
+          <div class="field">
+            <label for="interesse_invest">Área de interesse para investimento</label>
+            <select id="interesse_invest" name="interesse_invest">
+              <option>Bolsas de estudo</option>
+              <option>Materiais e infraestrutura</option>
+              <option>Oficinas técnicas</option>
+              <option>Educação financeira</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">E-mail para contato</label>
+          <input type="text" id="email" name="email" autocomplete="email" required>
+          <p class="hint">Usamos apenas para dar retorno sobre a sua candidatura.</p>
+        </div>
+
+        <div class="submit-row">
+          <button class="btn btn-primary" type="submit">Enviar candidatura</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ CONTATO ============ -->
+  <section id="contato">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Contato</span>
+        <h2>Fale com o time</h2>
+        <p>Dúvidas sobre o projeto, parcerias institucionais ou imprensa — estamos por aqui.</p>
+      </div>
+
+      <div class="contact-grid">
+        <ul class="contact-list">
+          <li>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v14H4z" stroke="currentColor" stroke-width="1.6"/><path d="M4 6l8 7 8-7" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+            <div><strong>E-mail</strong> contato@valoressociais.org</div>
+          </li>
+          <li>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h5l2 5-3 2c1 3 3 5 6 6l2-3 5 2v5c-9 1-17-7-17-17z" stroke="currentColor" stroke-width="1.4"/></svg>
+            <div><strong>Telefone / WhatsApp</strong> (11) 4000-0000</div>
+          </li>
+          <li>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 22s7-7.2 7-12.5A7 7 0 0 0 5 9.5C5 14.8 12 22 12 22z" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.4"/></svg>
+            <div><strong>Sede</strong> São Paulo, SP — atendimento também remoto</div>
+          </li>
+        </ul>
+        <div class="map-note">
+          <strong style="display:block;margin-bottom:.4rem;">Prefere se candidatar direto?</strong>
+          <p style="margin-bottom:1rem;">O formulário de voluntariado, estudante ou investidor está na seção Projetos de Solução.</p>
+          <a class="btn btn-ghost" href="#solucao">Ir para o formulário</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOBRE ============ -->
+  <section class="alt" id="sobre">
+    <div class="wrap about-grid">
+      <div>
+        <span class="kicker">Sobre</span>
+        <h2 style="margin-bottom:1rem;">Um site pensado para chegar a todo mundo</h2>
+        <p>O Valores Sociais nasceu para dar visibilidade ao Objetivo 4 da Agenda 2030 da ONU — educação inclusiva, equitativa e de qualidade — e para transformar essa visibilidade em ação: voluntariado, apoio a estudantes e investimento.</p>
+        <p>Como o público vai de jovens a idosos, de estudantes a investidores, e inclui prioritariamente pessoas com deficiência, a acessibilidade não é um extra: é requisito de design em cada página.</p>
+
+        <ul class="a11y-list" style="margin-top:1.6rem;">
+          <li><span class="chk">✓</span> Texto alternativo em imagens e ilustrações</li>
+          <li><span class="chk">✓</span> Contraste e tamanho de fonte ajustáveis</li>
+          <li><span class="chk">✓</span> Navegação completa por teclado, com foco visível</li>
+          <li><span class="chk">✓</span> Botões e links grandes, sem cores vibrantes</li>
+          <li class="soon"><span class="chk">◐</span> Tradução automática para Libras — em desenvolvimento</li>
+          <li class="soon"><span class="chk">◐</span> Autodescrição em áudio — em desenvolvimento</li>
+        </ul>
+      </div>
+
+      <ul class="value-list">
+        <li><strong>Equidade</strong>Educação de qualidade não deveria depender de quanto a família ganha.</li>
+        <li><strong>Idade nenhuma é tarde</strong>Jovens e adultos que não concluíram a educação básica também são público prioritário.</li>
+        <li><strong>Sustentabilidade</strong>Conteúdo sobre desenvolvimento sustentável integrado à formação, não como matéria à parte.</li>
+        <li><strong>Transparência</strong>Toda doação e todo voluntariado têm retorno claro para quem contribuiu.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Valores Sociais — projeto de impacto social alinhado ao Objetivo 4 (Educação de Qualidade) da Agenda 2030 da ONU. Dados de referência: <a href="https://sdgs.un.org/goals/goal4#targets_and_indicators">sdgs.un.org/goals/goal4</a>.</p>
+    <ul class="footer-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#solucao">Participar</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
