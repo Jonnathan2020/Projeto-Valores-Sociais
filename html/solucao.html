@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+        <!-- accessibility controls (radios/checkbox live here so :has() can style body) -->
+        <input type="radio" name="fontsize" id="fs-normal" checked>
+        <input type="radio" name="fontsize" id="fs-large">
+        <input type="radio" name="fontsize" id="fs-xl">
+        <input type="checkbox" id="contrast-on">
+
+        <div class="a11y-bar" role="region" aria-label="Preferências de acessibilidade">
+        <div class="wrap">
+            <div class="a11y-group">
+            <span class="lbl">Tamanho do texto</span>
+            <label for="fs-normal">A</label>
+            <label for="fs-large">A+</label>
+            <label for="fs-xl">A++</label>
+            </div>
+            <div class="a11y-group">
+            <label for="contrast-on">Alto contraste</label>
+            </div>
+        </div>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap nav-row">
+                <a class="brand" href="#home">
+                <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <path d="M16 4 L29 10 L16 16 L3 10 Z" fill="currentColor"/>
+                    <path d="M9 13.5 V21 C9 23.5 12 26 16 26 C20 26 23 23.5 23 21 V13.5" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Valores Sociais
+                </a>
+                <nav class="primary-nav" aria-label="Navegação principal">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="problema.html">Problema Social</a></li>
+                    <li><a href="educacao.html">Educação</a></li>
+                    <li><a href="financas.html">Dicas Financeiras</a></li>
+                    <li><a href="solucao.html">Projetos de Solução</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                </ul>
+                </nav>
+            </div>
+        </header>
+
+    <main id="conteudo">
+
+        <!-- ============ SOLUÇÃO / FORM ============ -->
+        <section class="alt" id="solucao">
+            <div class="wrap">
+            <div class="section-head">
+                <span class="kicker">Projetos de Solução</span>
+                <h2>Como o Valores Sociais atua</h2>
+            </div>
+            <div class="solution-copy">
+                <p>Conectamos quem tem tempo, conhecimento ou recursos a quem precisa deles para continuar estudando. O projeto funciona com três tipos de colaboração — escolha a que combina com você no formulário abaixo.</p>
+            </div>
+
+            <div class="role-grid">
+                <div class="role-card">
+                <h3>Voluntário</h3>
+                <p>Dá aulas de reforço, mentoria, doa materiais de apoio ou ajuda na divulgação do projeto.</p>
+                </div>
+                <div class="role-card">
+                <h3>Estudante</h3>
+                <p>Se inscreve para receber acompanhamento pedagógico, bolsas parceiras e oficinas de educação financeira.</p>
+                </div>
+                <div class="role-card">
+                <h3>Investidor</h3>
+                <p>Financia bolsas, materiais e a manutenção das oficinas técnicas e profissionalizantes.</p>
+                </div>
+            </div>
+
+            <form class="apply" aria-labelledby="form-title">
+                <h3 id="form-title" style="margin-bottom:1.4rem;">Formulário de candidatura</h3>
+
+                <div class="two-col">
+                <div class="field">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" autocomplete="given-name" required>
+                </div>
+                <div class="field">
+                    <label for="sobrenome">Sobrenome</label>
+                    <input type="text" id="sobrenome" name="sobrenome" autocomplete="family-name" required>
+                </div>
+                </div>
+
+                <fieldset>
+                <legend>Tipo de candidatura</legend>
+                <div class="radio-set">
+                    <label><input type="radio" name="tipo" id="tipo-voluntario" checked><span>Voluntário</span></label>
+                    <label><input type="radio" name="tipo" id="tipo-estudante"><span>Estudante</span></label>
+                    <label><input type="radio" name="tipo" id="tipo-investidor"><span>Investidor</span></label>
+                </div>
+                </fieldset>
+
+                <!-- Voluntário -->
+                <div class="conditional-fields for-vol">
+                <div class="two-col">
+                    <div class="field">
+                    <label for="sexo">Sexo</label>
+                    <select id="sexo" name="sexo">
+                        <option value="">Prefiro não informar</option>
+                        <option>Feminino</option>
+                        <option>Masculino</option>
+                        <option>Outro</option>
+                    </select>
+                    </div>
+                    <div class="field">
+                    <label for="data_nasc">Data de nascimento</label>
+                    <input type="date" id="data_nasc" name="data_nasc">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="habilidades">Habilidades</label>
+                    <textarea id="habilidades" name="habilidades" placeholder="Ex.: dou aulas de matemática, sei design, tenho materiais para doar..."></textarea>
+                </div>
+                <fieldset>
+                    <legend>Área de interesse</legend>
+                    <div class="check-set">
+                    <label><input type="checkbox" name="area" value="evangelista"> Evangelista do projeto (divulgação)</label>
+                    <label><input type="checkbox" name="area" value="educador"> Educador / mentor</label>
+                    <label><input type="checkbox" name="area" value="doador_documentos"> Doador de documentos e conteúdo</label>
+                    <label><input type="checkbox" name="area" value="materiais"> Doador de materiais de apoio</label>
+                    </div>
+                </fieldset>
+                </div>
+
+                <!-- Estudante -->
+                <div class="conditional-fields for-est">
+                <div class="field">
+                    <label for="etapa">Em qual etapa você está?</label>
+                    <select id="etapa" name="etapa">
+                    <option>Ensino médio</option>
+                    <option>Curso técnico / profissionalizante</option>
+                    <option>Ensino superior</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="necessidade">O que você mais precisa agora?</label>
+                    <textarea id="necessidade" name="necessidade" placeholder="Ex.: bolsa, material, acompanhamento pedagógico..."></textarea>
+                </div>
+                </div>
+
+                <!-- Investidor -->
+                <div class="conditional-fields for-inv">
+                <div class="field">
+                    <label for="interesse_invest">Área de interesse para investimento</label>
+                    <select id="interesse_invest" name="interesse_invest">
+                    <option>Bolsas de estudo</option>
+                    <option>Materiais e infraestrutura</option>
+                    <option>Oficinas técnicas</option>
+                    <option>Educação financeira</option>
+                    </select>
+                </div>
+                </div>
+
+                <div class="field">
+                <label for="email">E-mail para contato</label>
+                <input type="text" id="email" name="email" autocomplete="email" required>
+                <p class="hint">Usamos apenas para dar retorno sobre a sua candidatura.</p>
+                </div>
+
+                <div class="submit-row">
+                <button class="btn btn-primary" type="submit">Enviar candidatura</button>
+                </div>
+            </form>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer>
+    <div class="wrap">
+        <p>Valores Sociais — projeto de impacto social alinhado ao Objetivo 4 (Educação de Qualidade) da Agenda 2030 da ONU. Dados de referência: <a href="https://sdgs.un.org/goals/goal4#targets_and_indicators">sdgs.un.org/goals/goal4</a>.</p>
+        <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="solucao.html">Participar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        </ul>
+    </div>
+    </footer>
+</body>
+</html>

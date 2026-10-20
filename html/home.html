@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+        <!-- accessibility controls (radios/checkbox live here so :has() can style body) -->
+        <input type="radio" name="fontsize" id="fs-normal" checked>
+        <input type="radio" name="fontsize" id="fs-large">
+        <input type="radio" name="fontsize" id="fs-xl">
+        <input type="checkbox" id="contrast-on">
+
+        <div class="a11y-bar" role="region" aria-label="Preferências de acessibilidade">
+        <div class="wrap">
+            <div class="a11y-group">
+            <span class="lbl">Tamanho do texto</span>
+            <label for="fs-normal">A</label>
+            <label for="fs-large">A+</label>
+            <label for="fs-xl">A++</label>
+            </div>
+            <div class="a11y-group">
+            <label for="contrast-on">Alto contraste</label>
+            </div>
+        </div>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap nav-row">
+                <a class="brand" href="#home">
+                <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <path d="M16 4 L29 10 L16 16 L3 10 Z" fill="currentColor"/>
+                    <path d="M9 13.5 V21 C9 23.5 12 26 16 26 C20 26 23 23.5 23 21 V13.5" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Valores Sociais
+                </a>
+                <nav class="primary-nav" aria-label="Navegação principal">
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="problema.html">Problema Social</a></li>
+                        <li><a href="educacao.html">Educação</a></li>
+                        <li><a href="financas.html">Dicas Financeiras</a></li>
+                        <li><a href="solucao.html">Projetos de Solução</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>           
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+    <main id="conteudo">
+
+        <!-- ============ HOME ============ -->
+        <section class="hero" id="home" style="border-top:none;">
+            <div class="wrap">
+            <div>
+                <span class="eyebrow">Objetivo 4 da Agenda 2030 — ODS da ONU</span>
+                <h1>A educação de qualidade ainda depende de <em>quanto a sua família ganha</em>.</h1>
+                <p class="lede">O Valores Sociais reúne dados sobre essa desigualdade, explica o caminho da educação básica à superior e conecta voluntários, estudantes e investidores a quem precisa desse apoio — em qualquer idade.</p>
+                <div class="cta-row">
+                <a class="btn btn-primary" href="solucao.html">Quero participar</a>
+                <a class="btn btn-ghost" href="problema.html">Entender o problema</a>
+                </div>
+            </div>
+            <div>
+                <div class="stat-panel">
+                <span class="num">44%</span>
+                <p class="num-label">dos brasileiros com 25 anos ou mais ainda não concluíram a educação básica.</p>
+                <p class="num-source">Um ciclo que se repassa entre gerações — e que pode ser quebrado com acesso e apoio contínuo.</p>
+                </div>
+                <svg class="hero-illustration" viewBox="0 0 400 140" aria-hidden="true">
+                <line x1="0" y1="120" x2="400" y2="120" stroke="currentColor" stroke-width="1.5" opacity=".35"/>
+                <rect x="20"  y="90" width="34" height="30" fill="currentColor" opacity=".35"/>
+                <rect x="80"  y="70" width="34" height="50" fill="currentColor" opacity=".55"/>
+                <rect x="140" y="45" width="34" height="75" fill="currentColor" opacity=".75"/>
+                <rect x="200" y="20" width="34" height="100" fill="currentColor"/>
+                <path d="M250 100 Q 300 20 360 20" stroke="currentColor" stroke-width="2" fill="none" opacity=".6"/>
+                <circle cx="360" cy="20" r="5" fill="currentColor"/>
+                </svg>
+            </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer>
+    <div class="wrap">
+        <p>Valores Sociais — projeto de impacto social alinhado ao Objetivo 4 (Educação de Qualidade) da Agenda 2030 da ONU. Dados de referência: <a href="https://sdgs.un.org/goals/goal4#targets_and_indicators">sdgs.un.org/goals/goal4</a>.</p>
+        <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="solucao.html">Participar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        </ul>
+    </div>
+    </footer>
+</body>
+</html>

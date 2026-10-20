@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+        <!-- accessibility controls (radios/checkbox live here so :has() can style body) -->
+        <input type="radio" name="fontsize" id="fs-normal" checked>
+        <input type="radio" name="fontsize" id="fs-large">
+        <input type="radio" name="fontsize" id="fs-xl">
+        <input type="checkbox" id="contrast-on">
+
+        <div class="a11y-bar" role="region" aria-label="Preferências de acessibilidade">
+        <div class="wrap">
+            <div class="a11y-group">
+            <span class="lbl">Tamanho do texto</span>
+            <label for="fs-normal">A</label>
+            <label for="fs-large">A+</label>
+            <label for="fs-xl">A++</label>
+            </div>
+            <div class="a11y-group">
+            <label for="contrast-on">Alto contraste</label>
+            </div>
+        </div>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap nav-row">
+                <a class="brand" href="#home">
+                <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <path d="M16 4 L29 10 L16 16 L3 10 Z" fill="currentColor"/>
+                    <path d="M9 13.5 V21 C9 23.5 12 26 16 26 C20 26 23 23.5 23 21 V13.5" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Valores Sociais
+                </a>
+                <nav class="primary-nav" aria-label="Navegação principal">
+                    <ul>
+                        <li><a href="home.html">Home</a></li>
+                        <li><a href="problema.html">Problema Social</a></li>
+                        <li><a href="educacao.html">Educação</a></li>
+                        <li><a href="financas.html">Dicas Financeiras</a></li>
+                        <li><a href="solucao.html">Projetos de Solução</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>           
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- ============ PROBLEMA SOCIAL ============ -->
+        <section id="problema">
+            <div class="wrap">
+            <div class="section-head">
+                <span class="kicker">Problema Social</span>
+                <h2>Acesso desigual, resultados desiguais</h2>
+                <p>O acesso físico à escola avançou nas últimas décadas, mas a qualidade do ensino recebido ainda é determinada, na prática, pela renda da família. A isso se somam barreiras de idade, gênero, deficiência, raça, etnia e origem.</p>
+            </div>
+
+            <div class="fact-grid">
+                <div class="fact-card">
+                <span class="fig">44%</span>
+                <p>dos brasileiros acima de 25 anos não concluíram a educação básica.</p>
+                </div>
+                <div class="fact-card">
+                <span class="fig">15+</span>
+                <p>é a idade em que, para milhões de adolescentes, trabalhar deixa de ser escolha e vira necessidade de sobrevivência.</p>
+                </div>
+                <div class="fact-card">
+                <span class="fig">1</span>
+                <p>renda por vez: quando o estudo compete com o sustento da casa, o estudo quase sempre perde.</p>
+                </div>
+                <div class="fact-card">
+                <span class="fig">↻</span>
+                <p>Sem educação técnica ou superior, o ciclo de baixa renda se repete na geração seguinte.</p>
+                </div>
+            </div>
+
+            <p class="divider-note">Por isso tratamos educação e educação financeira como a mesma frente de trabalho: uma abre a porta da renda, a outra ensina a sustentar o que foi conquistado.</p>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer>
+    <div class="wrap">
+        <p>Valores Sociais — projeto de impacto social alinhado ao Objetivo 4 (Educação de Qualidade) da Agenda 2030 da ONU. Dados de referência: <a href="https://sdgs.un.org/goals/goal4#targets_and_indicators">sdgs.un.org/goals/goal4</a>.</p>
+        <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="solucao.html">Participar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        </ul>
+    </div>
+    </footer>
+</body>
+</html>
