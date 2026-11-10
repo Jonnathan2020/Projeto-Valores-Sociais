@@ -1,17 +1,24 @@
-const form = document.getElementById('meuForm'); 
-     
+
+const form = document.getElementsByClassName('formulario');
+let botao = document.getElementsByClassName('btn-primary');
+
 form.addEventListener('submit', function(event) { 
+    console.log("Form carregado!")
     event.preventDefault(); // Impede o envio padrão 
     
     let nome = document.getElementById('nome').value; 
     let sobrenome = document.getElementById('sobrenome').value; 
-    let tipoCandidatura = document.getElementByName('tipo').value;
+    let tipoCandidatura = document.getElementByNome(tipo)
     let email = document.getElementById('email').value; 
     let valido = true; 
-            
+    
+    console.log(nome);
+    console.log(sobrenome);
+    console.log(tipoCandidatura);
+
     // Limpar mensagens de erro 
-    document.getElementById('erroNome').innerText = ""; 
-    document.getElementById('erroEmail').innerText = ""; 
+    //document.getElementById('erroNome').innerText = ""; 
+    //document.getElementById('erroEmail').innerText = ""; 
             
     // Validação do Nome 
     if (nome.trim() === "") { 
@@ -27,8 +34,8 @@ form.addEventListener('submit', function(event) {
             
     if (valido) { 
         alert("Formulário enviado com sucesso!"); 
-        // Aqui você poderia enviar os dados para um servidor PHP, por exemplo. 
-        form.reset(); // Limpa o formulário 
+        console.log(form.nome, form.sobrenome, form.email)
+//        form.reset(); // Limpa o formulário 
     } 
 
 }); 

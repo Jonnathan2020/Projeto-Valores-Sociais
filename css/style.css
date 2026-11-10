@@ -234,7 +234,7 @@ section.alt .stage .tag{ background:var(--card); }
 .role-card h3{ font-size:1.1rem; margin-bottom:.4rem; }
 .role-card p{ font-size:.92rem; margin-bottom:0; }
 
-form.apply{
+form.formulario{
   background:var(--card); border:1px solid var(--line); border-radius:14px;
   padding:clamp(1.5rem,3vw,2.5rem); max-width:44rem;
 }
@@ -266,9 +266,9 @@ textarea{ min-height:6rem; resize:vertical; }
 .check-set input{ width:1.1rem; height:1.1rem; }
 
 .conditional-fields{ display:none; padding-top:.3rem; }
-form.apply:has(#tipo-voluntario:checked) .conditional-fields.for-vol{ display:block; }
-form.apply:has(#tipo-estudante:checked) .conditional-fields.for-est{ display:block; }
-form.apply:has(#tipo-investidor:checked) .conditional-fields.for-inv{ display:block; }
+form.formulario:has(#tipo-voluntario:checked) .conditional-fields.for-vol{ display:block; }
+form.formulario:has(#tipo-estudante:checked) .conditional-fields.for-est{ display:block; }
+form.formulario:has(#tipo-investidor:checked) .conditional-fields.for-inv{ display:block; }
 
 .hint{ font-size:.85rem; color:var(--ink-soft); margin-top:.35rem; }
 .submit-row{ margin-top:1.8rem; }
