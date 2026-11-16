@@ -318,3 +318,42 @@ footer p{ color:rgba(255,255,255,.8); margin:0; font-size:.9rem; max-width:none;
   .stage{ grid-template-columns:1fr; }
   .stage .stage-no{ font-size:1.6rem; }
 }
+
+
+/* ===== Acrescentar ao FINAL do css/style.css ===== */
+
+/* Erros de validação (usa as variáveis do projeto: funciona no alto contraste) */
+.erro{
+  color:var(--clay); font-size:.88rem; font-weight:600; margin:.4rem 0 0;
+}
+.is-invalid,
+input.is-invalid, select.is-invalid, textarea.is-invalid{
+  border-color:var(--clay) !important;
+}
+
+/* Mensagem geral do formulário */
+.form-msg{
+  padding:.85rem 1rem; border-radius:8px; margin-top:1.2rem;
+  font-weight:600; border:1.5px solid var(--line);
+}
+.form-msg[hidden]{ display:none; }
+.form-msg-sucesso{ border-color:var(--forest); color:var(--forest-deep); background:var(--paper-alt); }
+.form-msg-erro{ border-color:var(--clay); color:var(--clay); background:var(--paper-alt); }
+
+/* Painel de registros (candidaturas.html) */
+.painel-acoes{ display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; }
+.painel-acoes button{
+  font:inherit; font-weight:600; cursor:pointer; padding:.55rem 1rem;
+  border:1.5px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink);
+}
+.painel-acoes button:hover{ border-color:var(--forest-deep); }
+.tabela-scroll{ overflow-x:auto; }
+table[data-chave]{ width:100%; border-collapse:collapse; font-size:.92rem; background:var(--card); }
+table[data-chave] th, table[data-chave] td{
+  border:1px solid var(--line); padding:.6rem .7rem; text-align:left; vertical-align:top;
+}
+table[data-chave] th{ background:var(--paper-alt); white-space:nowrap; }
+table[data-chave] button{
+  font:inherit; cursor:pointer; padding:.3rem .7rem; border-radius:6px;
+  border:1.5px solid var(--clay); background:transparent; color:var(--clay);
+}

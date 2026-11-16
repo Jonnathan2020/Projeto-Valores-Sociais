@@ -85,6 +85,41 @@
                 <a class="btn btn-ghost" href="#solucao">Ir para o formulário</a>
                 </div>
             </div>
+            <form class="formulario formulario-contato" aria-labelledby="contato-form-title" style="margin-top:2.5rem;">
+                <h3 id="contato-form-title" style="margin-bottom:1.4rem;">Envie uma mensagem</h3>
+              
+                <div class="two-col">
+                  <div class="field">
+                    <label for="c-nome">Nome</label>
+                    <input type="text" id="c-nome" name="nome" autocomplete="name" required>
+                  </div>
+                  <div class="field">
+                    <label for="c-email">E-mail</label>
+                    <input type="text" id="c-email" name="email" autocomplete="email" required>
+                  </div>
+                </div>
+              
+                <div class="field">
+                  <label for="c-assunto">Assunto</label>
+                  <select id="c-assunto" name="assunto">
+                    <option value="">Selecione</option>
+                    <option>Dúvida sobre o projeto</option>
+                    <option>Parceria institucional</option>
+                    <option>Imprensa</option>
+                    <option>Outro</option>
+                  </select>
+                </div>
+              
+                <div class="field">
+                  <label for="c-mensagem">Mensagem</label>
+                  <textarea id="c-mensagem" name="mensagem" required></textarea>
+                </div>
+              
+                <div class="submit-row">
+                  <button class="btn-primary" type="submit">Enviar mensagem</button>
+                </div>
+              </form>
+              
             </div>
         </section>
     </main>
