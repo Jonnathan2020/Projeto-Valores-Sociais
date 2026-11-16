@@ -1,19 +1,6 @@
 /* ==========================================================
-   Valores Sociais — script.js
+   Valores Sociais — script.js (Unificado, Leitura por Foco/Tab e Enter Direto)
    Sem banco de dados: tudo é gravado no localStorage.
-
-   O que este arquivo faz:
-   1) Acessibilidade: lembra tamanho da fonte e alto contraste
-      entre as páginas (todas as páginas).
-   2) solucao.html: valida e grava o formulário de candidatura
-      (voluntário / estudante / investidor).
-   3) contato.html: valida e grava o formulário de contato
-      (somente se você adicionar o formulário opcional).
-   4) Painel (candidaturas.html): lista, exclui e exporta os
-      registros salvos (somente se a página tiver <table data-chave>).
-
-   Funciona com <script src="js/script.js" defer></script>
-   ou sem defer (tudo roda após o DOM carregar).
    ========================================================== */
    (function () {
     'use strict';
@@ -37,7 +24,7 @@
           localStorage.setItem(PREFIXO + chave, JSON.stringify(valor));
           return true;
         } catch (e) {
-          return false; // bloqueado ou cheio
+          return false;
         }
       },
       adicionar(chave, registro) {
@@ -60,37 +47,370 @@
     }
   
     /* ---------------------------------------------------------
-       1) ACESSIBILIDADE — mantém as preferências entre páginas
-          (os controles são <input> com ids fs-normal, fs-large,
-           fs-xl e contrast-on, estilizados por CSS :has())
+       1) ACESSIBILIDADE
+          - Preferências (tamanho de fonte, alto contraste, leitura ao navegar)
+          - Leitura em voz alta (Web Speech API)
+          - Tradução para Libras (VLibras)
        --------------------------------------------------------- */
-    function iniciarAcessibilidade() {
-      const fontes = ['fs-normal', 'fs-large', 'fs-xl']
-        .map(id => document.getElementById(id)).filter(Boolean);
+    function iniciarPreferencias() {
+      const tamanhos = ['fs-normal', 'fs-large', 'fs-xl'];
       const contraste = document.getElementById('contrast-on');
-      if (!fontes.length && !contraste) return;
-  
       const prefs = Store.ler('prefs', {});
   
-      // Restaura
-      if (prefs.fonte) {
-        const el = document.getElementById(prefs.fonte);
-        if (el) el.checked = true;
+      if (!prefs.fonte && !prefs.tamanho && typeof prefs.contraste !== 'boolean') {
+        try {
+          const antigo = JSON.parse(localStorage.getItem('vs-acessibilidade'));
+          if (antigo) Object.assign(prefs, antigo);
+        } catch (e) { /* ignora */ }
       }
+  
+      const tamanhoSalvo = prefs.fonte || prefs.tamanho;
+      const salvo = tamanhos.includes(tamanhoSalvo) ? document.getElementById(tamanhoSalvo) : null;
+      if (salvo) salvo.checked = true;
       if (contraste && typeof prefs.contraste === 'boolean') {
         contraste.checked = prefs.contraste;
       }
   
-      // Salva a cada mudança
-      fontes.forEach(el => el.addEventListener('change', () => {
-        if (el.checked) { prefs.fonte = el.id; Store.gravar('prefs', prefs); }
-      }));
+      tamanhos.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('change', () => {
+          if (el.checked) {
+            const p = Store.ler('prefs', {});
+            p.fonte = id;
+            Store.gravar('prefs', p);
+          }
+        });
+      });
+  
       if (contraste) {
         contraste.addEventListener('change', () => {
-          prefs.contraste = contraste.checked;
-          Store.gravar('prefs', prefs);
+          const p = Store.ler('prefs', {});
+          p.contraste = contraste.checked;
+          Store.gravar('prefs', p);
         });
       }
+    }
+  
+    function dividirEmTrechos(texto) {
+      const trechos = [];
+      texto.split(/\n+/).forEach(linha => {
+        linha = linha.replace(/\s+/g, ' ').trim();
+        if (!linha) return;
+        if (!/[.!?:;…]$/.test(linha)) linha += '.';
+        const frases = linha.match(/[^.!?]+[.!?]+["')\]]*\s*|[^.!?]+$/g) || [linha];
+        let atual = '';
+        frases.forEach(f => {
+          if (atual && (atual + f).length > 180) {
+            trechos.push(atual.trim());
+            atual = '';
+          }
+          atual += f;
+        });
+        if (atual.trim()) trechos.push(atual.trim());
+      });
+      return trechos;
+    }
+  
+    function descreverElementoFocado(el) {
+      if (!el || el === document.body) return '';
+  
+      let rotulo = el.getAttribute('aria-label') || '';
+      const labelledBy = el.getAttribute('aria-labelledby');
+      if (!rotulo && labelledBy) {
+        rotulo = labelledBy.split(/\s+/)
+          .map(id => document.getElementById(id))
+          .filter(Boolean)
+          .map(n => n.innerText.trim())
+          .join(' ');
+      }
+  
+      if (!rotulo && el.id) {
+        const lbl = document.querySelector('label[for="' + CSS.escape(el.id) + '"]');
+        if (lbl) rotulo = lbl.innerText.trim();
+      }
+      if (!rotulo) {
+        const parentLabel = el.closest('label');
+        if (parentLabel) rotulo = parentLabel.innerText.trim();
+      }
+  
+      if (!rotulo) {
+        rotulo = (el.innerText || el.value || el.getAttribute('placeholder') || el.getAttribute('title') || el.getAttribute('alt') || '').trim();
+      }
+  
+      rotulo = rotulo.replace(/\s+/g, ' ').trim();
+      if (!rotulo) return '';
+  
+      const tag = el.tagName.toLowerCase();
+      const type = (el.getAttribute('type') || '').toLowerCase();
+      const role = (el.getAttribute('role') || '').toLowerCase();
+  
+      let tipoTexto = '';
+      if (tag === 'a' || role === 'link') {
+        tipoTexto = 'Link';
+      } else if (tag === 'button' || role === 'button' || type === 'submit' || type === 'button') {
+        tipoTexto = 'Botão';
+      } else if (tag === 'select') {
+        const opt = el.options && el.selectedIndex >= 0 ? el.options[el.selectedIndex].text : '';
+        tipoTexto = 'Caixa de seleção' + (opt ? ', selecionado: ' + opt : '');
+      } else if (tag === 'textarea') {
+        tipoTexto = 'Campo de texto';
+      } else if (tag === 'input') {
+        if (type === 'checkbox') {
+          tipoTexto = 'Caixa de marcação, ' + (el.checked ? 'marcado' : 'desmarcado');
+        } else if (type === 'radio') {
+          tipoTexto = 'Opção, ' + (el.checked ? 'selecionada' : 'não selecionada');
+        } else {
+          tipoTexto = 'Campo de texto';
+        }
+      }
+  
+      return tipoTexto ? (tipoTexto + ': ' + rotulo) : rotulo;
+    }
+  
+    function iniciarLeitura() {
+      const synth = window.speechSynthesis;
+      if (!synth || !window.SpeechSynthesisUtterance) return;
+      const barra = document.querySelector('.a11y-bar .wrap');
+      if (!barra || barra.querySelector('[data-tts="pagina"]')) return;
+  
+      const prefs = Store.ler('prefs', {});
+      let lerAoFocar = typeof prefs.lerAoFocar === 'boolean' ? prefs.lerAoFocar : true;
+  
+      const grupo = document.createElement('div');
+      grupo.className = 'a11y-group';
+      grupo.setAttribute('role', 'group');
+      grupo.setAttribute('aria-label', 'Leitura em voz alta');
+      grupo.innerHTML =
+        '<span class="lbl">Leitura em voz alta</span>' +
+        '<button type="button" data-tts="foco" aria-pressed="' + (lerAoFocar ? 'true' : 'false') + '">' +
+          (lerAoFocar ? 'Leitura ao navegar (Tab): Ativa' : 'Leitura ao navegar (Tab): Desativada') +
+        '</button>' +
+        '<button type="button" data-tts="pagina">Ouvir página</button>' +
+        '<button type="button" data-tts="selecao">Ouvir seleção</button>' +
+        '<button type="button" data-tts="pausa" aria-pressed="false" disabled>Pausar</button>' +
+        '<button type="button" data-tts="parar" disabled>Parar</button>' +
+        '<select data-tts="velocidade" aria-label="Velocidade da leitura">' +
+          '<option value="0.85">Lenta</option>' +
+          '<option value="1">Normal</option>' +
+          '<option value="1.25">Rápida</option>' +
+        '</select>' +
+        '<span class="tts-status" role="status" aria-live="polite"></span>';
+      barra.appendChild(grupo);
+  
+      const btnFoco = grupo.querySelector('[data-tts="foco"]');
+      const btnPagina = grupo.querySelector('[data-tts="pagina"]');
+      const btnSelecao = grupo.querySelector('[data-tts="selecao"]');
+      const btnPausa = grupo.querySelector('[data-tts="pausa"]');
+      const btnParar = grupo.querySelector('[data-tts="parar"]');
+      const selVel = grupo.querySelector('[data-tts="velocidade"]');
+      const status = grupo.querySelector('.tts-status');
+  
+      let sessao = 0, falando = false, pausado = false, ultimaSelecao = '';
+      if (prefs.velocidade) selVel.value = prefs.velocidade;
+      if (selVel.value !== String(prefs.velocidade || selVel.value)) selVel.value = '1';
+  
+      function avisar(msg) { status.textContent = msg; }
+  
+      function atualizar() {
+        btnPausa.textContent = pausado ? 'Continuar' : 'Pausar';
+        btnPausa.setAttribute('aria-pressed', pausado ? 'true' : 'false');
+        btnPausa.disabled = !falando;
+        btnParar.disabled = !falando;
+      }
+  
+      function escolherVoz() {
+        const vozes = synth.getVoices();
+        for (let i = 0; i < vozes.length; i++) {
+          if ((vozes[i].lang || '').replace('_', '-').toLowerCase() === 'pt-br') return vozes[i];
+        }
+        for (let i = 0; i < vozes.length; i++) {
+          if ((vozes[i].lang || '').toLowerCase().indexOf('pt') === 0) return vozes[i];
+        }
+        return null;
+      }
+  
+      function parar() {
+        sessao++;
+        synth.cancel();
+        falando = false;
+        pausado = false;
+        atualizar();
+      }
+  
+      function falarElemento(texto) {
+        if (!texto) return;
+        sessao++;
+        synth.cancel();
+        falando = false;
+        pausado = false;
+        atualizar();
+  
+        const u = new SpeechSynthesisUtterance(texto);
+        u.lang = 'pt-BR';
+        u.rate = parseFloat(selVel.value) || 1;
+        const voz = escolherVoz();
+        if (voz) u.voice = voz;
+        synth.speak(u);
+      }
+  
+      function falar(texto, descricao) {
+        parar();
+        const trechos = dividirEmTrechos(texto);
+        if (!trechos.length) { avisar('Não há texto para ler.'); return; }
+  
+        const voz = escolherVoz();
+        if (!voz && synth.getVoices().length) {
+          avisar('Este navegador não tem voz em português; a leitura pode soar estranha.');
+        } else {
+          avisar(descricao);
+        }
+  
+        const minha = ++sessao;
+        let i = 0;
+        falando = true;
+        atualizar();
+  
+        (function proximo() {
+          if (minha !== sessao) return;
+          if (i >= trechos.length) {
+            falando = false;
+            pausado = false;
+            atualizar();
+            avisar('Leitura concluída.');
+            return;
+          }
+          const u = new SpeechSynthesisUtterance(trechos[i++]);
+          u.lang = 'pt-BR';
+          u.rate = parseFloat(selVel.value) || 1;
+          if (voz) u.voice = voz;
+          u.onend = proximo;
+          u.onerror = function (e) {
+            if (minha !== sessao) return;
+            if (e.error === 'canceled' || e.error === 'interrupted') return;
+            falando = false;
+            pausado = false;
+            atualizar();
+            avisar('Não foi possível ler o texto neste navegador.');
+          };
+          synth.speak(u);
+        })();
+      }
+  
+      // Escuta navegação por foco (Tab / Shift+Tab) em qualquer link, botão ou campo
+      document.addEventListener('focusin', e => {
+        if (!lerAoFocar) return;
+        const descricao = descreverElementoFocado(e.target);
+        if (descricao) falarElemento(descricao);
+      });
+  
+      // Força abertura imediata de links ao apertar Enter (fase de captura antes do navegador/VLibras)
+      window.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const ativo = document.activeElement;
+        if (!ativo) return;
+  
+        const link = ativo.closest('a[href]') || (ativo.matches('a[href]') ? ativo : null);
+        if (link) {
+          e.preventDefault();
+          e.stopPropagation();
+          const destino = link.getAttribute('href');
+          if (destino && destino !== '#') {
+            if (link.target === '_blank') {
+              window.open(link.href, '_blank', 'noopener');
+            } else {
+              window.location.assign(link.href);
+            }
+          } else {
+            link.click();
+          }
+        }
+      }, true);
+  
+      // Anuncia mudança de estado em checkboxes, radios e selects enquanto navega
+      document.addEventListener('change', e => {
+        if (!lerAoFocar) return;
+        if (e.target.matches('input[type="checkbox"], input[type="radio"], select')) {
+          const descricao = descreverElementoFocado(e.target);
+          if (descricao) falarElemento(descricao);
+        }
+      });
+  
+      btnFoco.addEventListener('click', () => {
+        lerAoFocar = !lerAoFocar;
+        btnFoco.setAttribute('aria-pressed', lerAoFocar ? 'true' : 'false');
+        btnFoco.textContent = lerAoFocar ? 'Leitura ao navegar (Tab): Ativa' : 'Leitura ao navegar (Tab): Desativada';
+        const p = Store.ler('prefs', {});
+        p.lerAoFocar = lerAoFocar;
+        Store.gravar('prefs', p);
+        if (!lerAoFocar) {
+          parar();
+          avisar('Leitura ao navegar desativada.');
+        } else {
+          falarElemento('Leitura ao navegar com Tab ativada.');
+        }
+      });
+  
+      document.addEventListener('selectionchange', () => {
+        const t = String(window.getSelection() || '').trim();
+        if (t) ultimaSelecao = t;
+      });
+  
+      btnPagina.addEventListener('click', () => {
+        const alvo = document.getElementById('conteudo') || document.body;
+        falar(alvo.innerText, 'Lendo o conteúdo da página.');
+      });
+  
+      btnSelecao.addEventListener('click', () => {
+        const t = String(window.getSelection() || '').trim() || ultimaSelecao;
+        if (!t) { avisar('Selecione um trecho do texto e clique de novo.'); return; }
+        falar(t, 'Lendo o trecho selecionado.');
+      });
+  
+      btnPausa.addEventListener('click', () => {
+        if (!falando) return;
+        if (pausado) { synth.resume(); pausado = false; avisar('Leitura retomada.'); }
+        else { synth.pause(); pausado = true; avisar('Leitura pausada.'); }
+        atualizar();
+      });
+  
+      btnParar.addEventListener('click', () => {
+        parar();
+        avisar('Leitura interrompida.');
+      });
+  
+      selVel.addEventListener('change', () => {
+        const p = Store.ler('prefs', {});
+        p.velocidade = selVel.value;
+        Store.gravar('prefs', p);
+        if (falando) avisar('A nova velocidade vale a partir do próximo trecho.');
+      });
+  
+      window.addEventListener('pagehide', () => { synth.cancel(); });
+    }
+  
+    function iniciarLibras() {
+      if (document.querySelector('[vw]')) return;
+      const caixa = document.createElement('div');
+      caixa.setAttribute('vw', '');
+      caixa.className = 'enabled';
+      caixa.innerHTML =
+        '<div vw-access-button class="active"></div>' +
+        '<div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>';
+      document.body.appendChild(caixa);
+  
+      const s = document.createElement('script');
+      s.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+      s.onload = () => {
+        if (window.VLibras) new window.VLibras.Widget('https://vlibras.gov.br/app');
+      };
+      document.body.appendChild(s);
+    }
+  
+    function iniciarAcessibilidade() {
+      iniciarPreferencias();
+      iniciarLeitura();
+      iniciarLibras();
     }
   
     /* ---------------------------------------------------------
@@ -180,9 +500,6 @@
     /* ---------------------------------------------------------
        2) FORMULÁRIO DE CANDIDATURA (solucao.html)
        --------------------------------------------------------- */
-  
-    // Os radios não têm atributo value, então o tipo vem do id:
-    // tipo-voluntario -> "voluntario", etc.
     function tipoSelecionado(form) {
       const r = form.querySelector('input[name="tipo"]:checked');
       return r ? r.id.replace('tipo-', '') : '';
@@ -195,7 +512,6 @@
       const add = (ref, chave, msg) => erros.push({ ref, chave, msg });
       const tipo = tipoSelecionado(form);
   
-      // Campos comuns
       ['nome', 'sobrenome'].forEach(n => {
         const msg = validarNome(valor(n));
         if (msg) add(campo(n), n, msg);
@@ -208,7 +524,6 @@
         add(form.querySelector('fieldset'), 'tipo', 'Escolha o tipo de candidatura.');
       }
   
-      // Voluntário
       if (tipo === 'voluntario') {
         const nasc = valor('data_nasc');
         if (nasc) {
@@ -225,7 +540,6 @@
         }
       }
   
-      // Estudante
       if (tipo === 'estudante') {
         const nec = valor('necessidade');
         if (!nec) add(campo('necessidade'), 'necessidade', 'Conte o que você mais precisa agora.');
@@ -246,7 +560,6 @@
         email: v('email').toLowerCase()
       };
   
-      // Só grava os campos do tipo escolhido (os outros estão ocultos)
       if (tipo === 'voluntario') {
         dados.sexo = v('sexo') || 'Não informado';
         dados.data_nasc = v('data_nasc');
@@ -320,9 +633,8 @@
       const form = document.querySelector(cfg.seletor);
       if (!form) return;
   
-      form.noValidate = true; // usamos a nossa própria validação
+      form.noValidate = true;
   
-      // Valida um campo ao sair dele; corrige o erro enquanto digita
       function validarUm(el) {
         if (!el.name) return;
         const erro = cfg.validar(form).find(e => e.chave === el.name);
@@ -341,7 +653,6 @@
   
       form.addEventListener('change', e => {
         if (e.target.name === 'tipo') {
-          // Ao trocar o tipo, descarta erros das seções que ficaram ocultas
           form.querySelectorAll('.conditional-fields .erro').forEach(p => p.remove());
           form.querySelectorAll('.conditional-fields .is-invalid').forEach(el => el.classList.remove('is-invalid'));
         }
@@ -387,10 +698,6 @@
   
     /* ---------------------------------------------------------
        4) PAINEL DE REGISTROS (candidaturas.html)
-          <table data-chave="candidaturas"></table>
-          <button data-acao="exportar-csv"  data-chave="candidaturas">
-          <button data-acao="exportar-json" data-chave="candidaturas">
-          <button data-acao="limpar"        data-chave="candidaturas">
        --------------------------------------------------------- */
     const ROTULOS = {
       criadoEm: 'Enviado em', tipo: 'Tipo', nome: 'Nome', sobrenome: 'Sobrenome',
@@ -449,7 +756,7 @@
       const corpo = tabela.createTBody();
       lista.forEach(reg => {
         const tr = corpo.insertRow();
-        colunas.forEach(c => { tr.insertCell().textContent = formatarValor(c, reg[c]); }); // textContent evita XSS
+        colunas.forEach(c => { tr.insertCell().textContent = formatarValor(c, reg[c]); });
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.textContent = 'Excluir';
@@ -475,7 +782,7 @@
       const colunas = colunasDe(lista);
       const celula = v => {
         let t = Array.isArray(v) ? v.join('; ') : String(v === undefined || v === null ? '' : v);
-        if (/^[=+\-@]/.test(t)) t = "'" + t; // evita injeção de fórmula no Excel
+        if (/^[=+\-@]/.test(t)) t = "'" + t;
         return '"' + t.replace(/"/g, '""') + '"';
       };
       const linhas = [colunas.map(c => celula(ROTULOS[c] || c)).join(';')]
@@ -528,4 +835,5 @@
     } else {
       iniciar();
     }
-  })(); 
+  })();
+  
