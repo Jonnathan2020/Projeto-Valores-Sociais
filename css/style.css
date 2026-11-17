@@ -32,6 +32,21 @@ body:has(#contrast-on:checked){
   --focus: #F4C567;
 }
 
+body.dark-mode{
+  --paper: #141713;
+  --paper-alt: #1C211B;
+  --card: #20251F;
+  --ink: #F1F3EB;
+  --ink-soft: #C2C9BD;
+  --forest: #A9D6AF;
+  --forest-deep: #CFEBD2;
+  --ochre: #F4C567;
+  --ochre-deep: #FFDD9A;
+  --clay: #FF9E76;
+  --line: #454B42;
+  --focus: #F4C567;
+}
+
 *,*::before,*::after{ box-sizing:border-box; }
 html{
   scroll-behavior:smooth;
@@ -51,6 +66,9 @@ body{
   padding-bottom:env(safe-area-inset-bottom,0px);
   -webkit-font-smoothing:antialiased;
   transition: background .2s ease, color .2s ease;
+}
+body *{
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
 
 h1,h2,h3{
@@ -106,6 +124,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,tex
   color:#fff;
 }
 .a11y-bar label:hover{ border-color:#fff; background:rgba(255,255,255,.08); }
+.theme-toggle{
+  cursor:pointer; font:inherit; font-weight:600; color:#fff;
+  border:1.5px solid rgba(255,255,255,.55); background:transparent;
+  padding:.28rem .65rem; border-radius:5px;
+}
+.theme-toggle:hover{ border-color:#fff; background:rgba(255,255,255,.08); }
 #fs-normal:checked ~ .a11y-bar label[for="fs-normal"],
 #fs-large:checked  ~ .a11y-bar label[for="fs-large"],
 #fs-xl:checked     ~ .a11y-bar label[for="fs-xl"],
@@ -155,15 +179,23 @@ nav.primary-nav a:hover{ color:var(--forest-deep); border-bottom-color:var(--och
   display:inline-block; text-decoration:none; font-weight:700;
   padding:.85rem 1.5rem; border-radius:7px; font-size:1rem;
   border:1.5px solid transparent;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease,
+    box-shadow .2s ease, transform .2s ease;
 }
-.btn-primary{ background:var(--forest-deep); color:#fff; }
-.btn-primary:hover{ background:var(--forest); }
-.btn-ghost{ border-color:var(--ink); color:var(--ink); }
-.btn-ghost:hover{ background:var(--paper-alt); }
+.btn-primary{
+  background:var(--forest-deep); color:#fff;
+  box-shadow:0 3px 10px rgba(35,38,31,.16);
+}
+.btn-primary:hover{ background:var(--forest); box-shadow:0 6px 16px rgba(35,38,31,.2); }
+.btn-ghost{ border-color:var(--ink); color:var(--ink); background:var(--card); }
+.btn-ghost:hover{ background:var(--paper-alt); border-color:var(--forest-deep); }
+.btn:hover{ transform:translateY(-2px); }
+.btn:active{ transform:translateY(0); }
 
 .stat-panel{
   background:var(--card); border:1px solid var(--line); border-radius:14px;
   padding:clamp(1.5rem,3vw,2.4rem);
+  box-shadow:0 12px 30px rgba(35,38,31,.1);
 }
 .stat-panel .num{
   font-family:"Newsreader",serif; font-style:italic; font-weight:500;
@@ -273,6 +305,38 @@ form.formulario:has(#tipo-investidor:checked) .conditional-fields.for-inv{ displ
 .hint{ font-size:.85rem; color:var(--ink-soft); margin-top:.35rem; }
 .submit-row{ margin-top:1.8rem; }
 button.btn-primary{ font:inherit; cursor:pointer; }
+body.dark-mode:not(:has(#contrast-on:checked)) .btn-primary{
+  background:var(--forest); color:#172018;
+  box-shadow:0 3px 14px rgba(0,0,0,.24);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) .btn-primary:hover{
+  background:var(--forest-deep);
+}
+body.dark-mode .stat-panel{
+  box-shadow:0 12px 30px rgba(0,0,0,.24);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) .a11y-bar{
+  background:var(--card); color:var(--ink);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) .a11y-bar label,
+body.dark-mode:not(:has(#contrast-on:checked)) .theme-toggle{
+  color:var(--ink); border-color:var(--line);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) .a11y-bar label:hover,
+body.dark-mode:not(:has(#contrast-on:checked)) .theme-toggle:hover{
+  border-color:var(--ink); background:var(--paper-alt);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) #fs-normal:checked ~ .a11y-bar label[for="fs-normal"],
+body.dark-mode:not(:has(#contrast-on:checked)) #fs-large:checked ~ .a11y-bar label[for="fs-large"],
+body.dark-mode:not(:has(#contrast-on:checked)) #fs-xl:checked ~ .a11y-bar label[for="fs-xl"],
+body.dark-mode:not(:has(#contrast-on:checked)) #contrast-on:checked ~ .a11y-bar label[for="contrast-on"]{
+  background:var(--ink); color:var(--card); border-color:var(--ink);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) footer{
+  background:var(--card); color:var(--ink);
+}
+body.dark-mode:not(:has(#contrast-on:checked)) footer a{ color:var(--forest-deep); }
+body.dark-mode:not(:has(#contrast-on:checked)) footer p{ color:var(--ink-soft); }
 
 /* ============ CONTATO ============ */
 .contact-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(2rem,4vw,3.5rem); align-items:start; }

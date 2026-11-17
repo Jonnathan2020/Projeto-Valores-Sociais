@@ -412,6 +412,27 @@
       iniciarLeitura();
       iniciarLibras();
     }
+
+    function iniciarTemaEscuro() {
+      const botao = document.getElementById('theme-toggle');
+      if (!botao) return;
+
+      const aplicarTema = ativo => {
+        document.body.classList.toggle('dark-mode', ativo);
+        botao.setAttribute('aria-pressed', String(ativo));
+        botao.textContent = ativo ? 'Ativar modo claro' : 'Ativar modo escuro';
+      };
+
+      aplicarTema(Store.ler('temaEscuro', false) === true);
+      botao.addEventListener('click', () => {
+        const ativo = !document.body.classList.contains('dark-mode');
+        aplicarTema(ativo);
+        if (!Store.gravar('temaEscuro', ativo)) {
+          aplicarTema(!ativo);
+          window.alert('Não foi possível salvar a preferência de tema neste navegador.');
+        }
+      });
+    }
   
     /* ---------------------------------------------------------
        UTILIDADES DE INTERFACE (erros e mensagens)
@@ -825,7 +846,9 @@
        INICIALIZAÇÃO
        --------------------------------------------------------- */
     function iniciar() {
+      iniciarTemaEscuro();
       iniciarAcessibilidade();
+      iniciarContagemEstatistica();
       FORMULARIOS.forEach(iniciarFormulario);
       iniciarPainel();
     }
