@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Painel de registros — Valores Sociais</title>
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <main>
+        <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+        <!-- accessibility controls (radios/checkbox live here so :has() can style body) -->
+        <input type="radio" name="fontsize" id="fs-normal" checked>
+        <input type="radio" name="fontsize" id="fs-large">
+        <input type="radio" name="fontsize" id="fs-xl">
+        <input type="checkbox" id="contrast-on">
+
+        <div class="a11y-bar" role="region" aria-label="Preferências de acessibilidade">
+        <div class="wrap">
+            <div class="a11y-group">
+            <span class="lbl">Tamanho do texto</span>
+            <label for="fs-normal">A</label>
+            <label for="fs-large">A+</label>
+            <label for="fs-xl">A++</label>
+            </div>
+            <div class="a11y-group">
+            <label for="contrast-on">Alto contraste</label>
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Ativar modo escuro</button>
+            </div>
+        </div>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap nav-row">
+                <a class="brand" href="#home">
+                <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <path d="M16 4 L29 10 L16 16 L3 10 Z" fill="currentColor"/>
+                    <path d="M9 13.5 V21 C9 23.5 12 26 16 26 C20 26 23 23.5 23 21 V13.5" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Valores Sociais
+                </a>
+                <nav class="primary-nav" aria-label="Navegação principal">
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="problema.html">Problema Social</a></li>
+                    <li><a href="educacao.html">Educação</a></li>
+                    <li><a href="financas.html">Dicas Financeiras</a></li>
+                    <li><a href="solucao.html">Solução</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="candidaturas.html">Candidaturas</a></li>  
+                </ul>
+                </nav>
+            </div>
+        </header>
+
+    <main id="conteudo">
+        <section>
+            <div class="wrap">
+                <div class="section-head">
+                    <span class="kicker">Painel</span>
+                    <h2>Registros salvos neste navegador</h2>
+                    <p>Os dados ficam no localStorage deste navegador e não são enviados a nenhum servidor.</p>
+                </div>
+
+                <h3>Candidaturas (<span data-contador="candidaturas">0</span>)</h3>
+                <div class="painel-acoes">
+                    <button type="button" data-acao="exportar-csv" data-chave="candidaturas">Exportar CSV</button>
+                    <button type="button" data-acao="exportar-json" data-chave="candidaturas">Exportar JSON</button>
+                    <button type="button" data-acao="limpar" data-chave="candidaturas">Apagar tudo</button>
+                </div>
+                <div class="tabela-scroll"><table data-chave="candidaturas"></table></div>
+
+                <h3 style="margin-top:3rem;">Mensagens de contato (<span data-contador="contatos">0</span>)</h3>
+                <div class="painel-acoes">
+                    <button type="button" data-acao="exportar-csv" data-chave="contatos">Exportar CSV</button>
+                    <button type="button" data-acao="exportar-json" data-chave="contatos">Exportar JSON</button>
+                    <button type="button" data-acao="limpar" data-chave="contatos">Apagar tudo</button>
+                </div>
+                <div class="tabela-scroll"><table data-chave="contatos"></table></div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer>
+    <div class="wrap">
+        <p>Valores Sociais — projeto de impacto social alinhado ao Objetivo 4 (Educação de Qualidade) da Agenda 2030 da ONU. Dados de referência: <a href="https://sdgs.un.org/goals/goal4#targets_and_indicators">sdgs.un.org/goals/goal4</a>.</p>
+        <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="solucao.html">Participar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        </ul>
+    </div>
+    </footer>
+</body>
+</html>
